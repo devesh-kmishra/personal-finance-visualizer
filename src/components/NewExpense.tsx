@@ -42,13 +42,12 @@ import { expenseCategories } from "@/lib/utils";
 
 export default function NewExpense() {
   const [open, setOpen] = useState(false);
-  const [date, setDate] = useState<Date | undefined>(new Date());
   const form = useForm<z.infer<typeof newExpenseSchema>>({
     resolver: zodResolver(newExpenseSchema),
     defaultValues: {
       userId: "",
       amount: 0,
-      date: date,
+      date: new Date(),
       description: "",
       category: "",
     },
@@ -151,7 +150,9 @@ export default function NewExpense() {
                         id="add-expense-date"
                         className="w-48 justify-between font-normal"
                       >
-                        {date ? date.toLocaleDateString() : "Select date"}
+                        {field.value
+                          ? field.value.toLocaleDateString()
+                          : "Select date"}
                         <ChevronDownIcon />
                       </Button>
                     </PopoverTrigger>
@@ -162,10 +163,10 @@ export default function NewExpense() {
                       <Calendar
                         {...field}
                         mode="single"
-                        selected={date}
+                        selected={field.value}
                         captionLayout="dropdown"
-                        onSelect={(date) => {
-                          setDate(date);
+                        onSelect={(value) => {
+                          field.onChange(value);
                           setOpen(false);
                         }}
                       />
