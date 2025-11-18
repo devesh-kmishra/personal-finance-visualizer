@@ -1036,10 +1036,12 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     oAuthAccounts: number
+    expenses: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     oAuthAccounts?: boolean | UserCountOutputTypeCountOAuthAccountsArgs
+    expenses?: boolean | UserCountOutputTypeCountExpensesArgs
   }
 
   // Custom InputTypes
@@ -1058,6 +1060,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountOAuthAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: OAuthAccountWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountExpensesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ExpenseWhereInput
   }
 
 
@@ -1087,6 +1096,7 @@ export namespace Prisma {
 
   export type ExpenseMinAggregateOutputType = {
     id: string | null
+    userId: string | null
     amount: number | null
     date: Date | null
     category: string | null
@@ -1097,6 +1107,7 @@ export namespace Prisma {
 
   export type ExpenseMaxAggregateOutputType = {
     id: string | null
+    userId: string | null
     amount: number | null
     date: Date | null
     category: string | null
@@ -1107,6 +1118,7 @@ export namespace Prisma {
 
   export type ExpenseCountAggregateOutputType = {
     id: number
+    userId: number
     amount: number
     date: number
     category: number
@@ -1127,6 +1139,7 @@ export namespace Prisma {
 
   export type ExpenseMinAggregateInputType = {
     id?: true
+    userId?: true
     amount?: true
     date?: true
     category?: true
@@ -1137,6 +1150,7 @@ export namespace Prisma {
 
   export type ExpenseMaxAggregateInputType = {
     id?: true
+    userId?: true
     amount?: true
     date?: true
     category?: true
@@ -1147,6 +1161,7 @@ export namespace Prisma {
 
   export type ExpenseCountAggregateInputType = {
     id?: true
+    userId?: true
     amount?: true
     date?: true
     category?: true
@@ -1244,6 +1259,7 @@ export namespace Prisma {
 
   export type ExpenseGroupByOutputType = {
     id: string
+    userId: string
     amount: number
     date: Date
     category: string
@@ -1273,18 +1289,21 @@ export namespace Prisma {
 
   export type ExpenseSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    userId?: boolean
     amount?: boolean
     date?: boolean
     category?: boolean
     description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["expense"]>
 
 
 
   export type ExpenseSelectScalar = {
     id?: boolean
+    userId?: boolean
     amount?: boolean
     date?: boolean
     category?: boolean
@@ -1293,13 +1312,19 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type ExpenseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "amount" | "date" | "category" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["expense"]>
+  export type ExpenseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "amount" | "date" | "category" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["expense"]>
+  export type ExpenseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
 
   export type $ExpensePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Expense"
-    objects: {}
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      userId: string
       amount: number
       date: Date
       category: string
@@ -1669,6 +1694,7 @@ export namespace Prisma {
    */
   export interface Prisma__ExpenseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1699,6 +1725,7 @@ export namespace Prisma {
    */
   interface ExpenseFieldRefs {
     readonly id: FieldRef<"Expense", 'String'>
+    readonly userId: FieldRef<"Expense", 'String'>
     readonly amount: FieldRef<"Expense", 'Float'>
     readonly date: FieldRef<"Expense", 'DateTime'>
     readonly category: FieldRef<"Expense", 'String'>
@@ -1722,6 +1749,10 @@ export namespace Prisma {
      */
     omit?: ExpenseOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    /**
      * Filter, which Expense to fetch.
      */
     where: ExpenseWhereUniqueInput
@@ -1740,6 +1771,10 @@ export namespace Prisma {
      */
     omit?: ExpenseOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    /**
      * Filter, which Expense to fetch.
      */
     where: ExpenseWhereUniqueInput
@@ -1757,6 +1792,10 @@ export namespace Prisma {
      * Omit specific fields from the Expense
      */
     omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
     /**
      * Filter, which Expense to fetch.
      */
@@ -1806,6 +1845,10 @@ export namespace Prisma {
      */
     omit?: ExpenseOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    /**
      * Filter, which Expense to fetch.
      */
     where?: ExpenseWhereInput
@@ -1854,6 +1897,10 @@ export namespace Prisma {
      */
     omit?: ExpenseOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    /**
      * Filter, which Expenses to fetch.
      */
     where?: ExpenseWhereInput
@@ -1897,6 +1944,10 @@ export namespace Prisma {
      */
     omit?: ExpenseOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    /**
      * The data needed to create a Expense.
      */
     data: XOR<ExpenseCreateInput, ExpenseUncheckedCreateInput>
@@ -1924,6 +1975,10 @@ export namespace Prisma {
      * Omit specific fields from the Expense
      */
     omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
     /**
      * The data needed to update a Expense.
      */
@@ -1965,6 +2020,10 @@ export namespace Prisma {
      */
     omit?: ExpenseOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    /**
      * The filter to search for the Expense to update in case it exists.
      */
     where: ExpenseWhereUniqueInput
@@ -1990,6 +2049,10 @@ export namespace Prisma {
      * Omit specific fields from the Expense
      */
     omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
     /**
      * Filter which Expense to delete.
      */
@@ -2050,6 +2113,10 @@ export namespace Prisma {
      * Omit specific fields from the Expense
      */
     omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
   }
 
 
@@ -2234,6 +2301,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     oAuthAccounts?: boolean | User$oAuthAccountsArgs<ExtArgs>
+    expenses?: boolean | User$expensesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2252,6 +2320,7 @@ export namespace Prisma {
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "salt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     oAuthAccounts?: boolean | User$oAuthAccountsArgs<ExtArgs>
+    expenses?: boolean | User$expensesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -2259,6 +2328,7 @@ export namespace Prisma {
     name: "User"
     objects: {
       oAuthAccounts: Prisma.$OAuthAccountPayload<ExtArgs>[]
+      expenses: Prisma.$ExpensePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2632,6 +2702,7 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     oAuthAccounts<T extends User$oAuthAccountsArgs<ExtArgs> = {}>(args?: Subset<T, User$oAuthAccountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OAuthAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    expenses<T extends User$expensesArgs<ExtArgs> = {}>(args?: Subset<T, User$expensesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3059,6 +3130,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: OAuthAccountScalarFieldEnum | OAuthAccountScalarFieldEnum[]
+  }
+
+  /**
+   * User.expenses
+   */
+  export type User$expensesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Expense
+     */
+    select?: ExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Expense
+     */
+    omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    where?: ExpenseWhereInput
+    orderBy?: ExpenseOrderByWithRelationInput | ExpenseOrderByWithRelationInput[]
+    cursor?: ExpenseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ExpenseScalarFieldEnum | ExpenseScalarFieldEnum[]
   }
 
   /**
@@ -4076,6 +4171,7 @@ export namespace Prisma {
 
   export const ExpenseScalarFieldEnum: {
     id: 'id',
+    userId: 'userId',
     amount: 'amount',
     date: 'date',
     category: 'category',
@@ -4211,22 +4307,26 @@ export namespace Prisma {
     OR?: ExpenseWhereInput[]
     NOT?: ExpenseWhereInput | ExpenseWhereInput[]
     id?: StringFilter<"Expense"> | string
+    userId?: StringFilter<"Expense"> | string
     amount?: FloatFilter<"Expense"> | number
     date?: DateTimeFilter<"Expense"> | Date | string
     category?: StringFilter<"Expense"> | string
     description?: StringNullableFilter<"Expense"> | string | null
     createdAt?: DateTimeFilter<"Expense"> | Date | string
     updatedAt?: DateTimeFilter<"Expense"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type ExpenseOrderByWithRelationInput = {
     id?: SortOrder
+    userId?: SortOrder
     amount?: SortOrder
     date?: SortOrder
     category?: SortOrder
     description?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
   }
 
   export type ExpenseWhereUniqueInput = Prisma.AtLeast<{
@@ -4234,16 +4334,19 @@ export namespace Prisma {
     AND?: ExpenseWhereInput | ExpenseWhereInput[]
     OR?: ExpenseWhereInput[]
     NOT?: ExpenseWhereInput | ExpenseWhereInput[]
+    userId?: StringFilter<"Expense"> | string
     amount?: FloatFilter<"Expense"> | number
     date?: DateTimeFilter<"Expense"> | Date | string
     category?: StringFilter<"Expense"> | string
     description?: StringNullableFilter<"Expense"> | string | null
     createdAt?: DateTimeFilter<"Expense"> | Date | string
     updatedAt?: DateTimeFilter<"Expense"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type ExpenseOrderByWithAggregationInput = {
     id?: SortOrder
+    userId?: SortOrder
     amount?: SortOrder
     date?: SortOrder
     category?: SortOrder
@@ -4262,6 +4365,7 @@ export namespace Prisma {
     OR?: ExpenseScalarWhereWithAggregatesInput[]
     NOT?: ExpenseScalarWhereWithAggregatesInput | ExpenseScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Expense"> | string
+    userId?: StringWithAggregatesFilter<"Expense"> | string
     amount?: FloatWithAggregatesFilter<"Expense"> | number
     date?: DateTimeWithAggregatesFilter<"Expense"> | Date | string
     category?: StringWithAggregatesFilter<"Expense"> | string
@@ -4282,6 +4386,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     oAuthAccounts?: OAuthAccountListRelationFilter
+    expenses?: ExpenseListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -4293,6 +4398,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     oAuthAccounts?: OAuthAccountOrderByRelationAggregateInput
+    expenses?: ExpenseOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -4307,6 +4413,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     oAuthAccounts?: OAuthAccountListRelationFilter
+    expenses?: ExpenseListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -4403,10 +4510,12 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutExpensesInput
   }
 
   export type ExpenseUncheckedCreateInput = {
     id?: string
+    userId: string
     amount: number
     date: Date | string
     category: string
@@ -4422,9 +4531,11 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutExpensesNestedInput
   }
 
   export type ExpenseUncheckedUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: StringFieldUpdateOperationsInput | string
@@ -4435,6 +4546,7 @@ export namespace Prisma {
 
   export type ExpenseCreateManyInput = {
     id?: string
+    userId: string
     amount: number
     date: Date | string
     category: string
@@ -4453,6 +4565,7 @@ export namespace Prisma {
   }
 
   export type ExpenseUncheckedUpdateManyInput = {
+    userId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: StringFieldUpdateOperationsInput | string
@@ -4470,6 +4583,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     oAuthAccounts?: OAuthAccountCreateNestedManyWithoutUserInput
+    expenses?: ExpenseCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -4481,6 +4595,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     oAuthAccounts?: OAuthAccountUncheckedCreateNestedManyWithoutUserInput
+    expenses?: ExpenseUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -4491,6 +4606,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     oAuthAccounts?: OAuthAccountUpdateManyWithoutUserNestedInput
+    expenses?: ExpenseUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -4501,6 +4617,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     oAuthAccounts?: OAuthAccountUncheckedUpdateManyWithoutUserNestedInput
+    expenses?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -4642,8 +4759,14 @@ export namespace Prisma {
     isSet?: boolean
   }
 
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
   export type ExpenseCountOrderByAggregateInput = {
     id?: SortOrder
+    userId?: SortOrder
     amount?: SortOrder
     date?: SortOrder
     category?: SortOrder
@@ -4658,6 +4781,7 @@ export namespace Prisma {
 
   export type ExpenseMaxOrderByAggregateInput = {
     id?: SortOrder
+    userId?: SortOrder
     amount?: SortOrder
     date?: SortOrder
     category?: SortOrder
@@ -4668,6 +4792,7 @@ export namespace Prisma {
 
   export type ExpenseMinOrderByAggregateInput = {
     id?: SortOrder
+    userId?: SortOrder
     amount?: SortOrder
     date?: SortOrder
     category?: SortOrder
@@ -4753,7 +4878,17 @@ export namespace Prisma {
     none?: OAuthAccountWhereInput
   }
 
+  export type ExpenseListRelationFilter = {
+    every?: ExpenseWhereInput
+    some?: ExpenseWhereInput
+    none?: ExpenseWhereInput
+  }
+
   export type OAuthAccountOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ExpenseOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -4794,11 +4929,6 @@ export namespace Prisma {
     not?: NestedEnumOAuthProviderEnumFilter<$PrismaModel> | $Enums.OAuthProviderEnum
   }
 
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
-  }
-
   export type OAuthAccountCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
@@ -4836,6 +4966,12 @@ export namespace Prisma {
     _max?: NestedEnumOAuthProviderEnumFilter<$PrismaModel>
   }
 
+  export type UserCreateNestedOneWithoutExpensesInput = {
+    create?: XOR<UserCreateWithoutExpensesInput, UserUncheckedCreateWithoutExpensesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutExpensesInput
+    connect?: UserWhereUniqueInput
+  }
+
   export type FloatFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -4857,6 +4993,14 @@ export namespace Prisma {
     unset?: boolean
   }
 
+  export type UserUpdateOneRequiredWithoutExpensesNestedInput = {
+    create?: XOR<UserCreateWithoutExpensesInput, UserUncheckedCreateWithoutExpensesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutExpensesInput
+    upsert?: UserUpsertWithoutExpensesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutExpensesInput, UserUpdateWithoutExpensesInput>, UserUncheckedUpdateWithoutExpensesInput>
+  }
+
   export type OAuthAccountCreateNestedManyWithoutUserInput = {
     create?: XOR<OAuthAccountCreateWithoutUserInput, OAuthAccountUncheckedCreateWithoutUserInput> | OAuthAccountCreateWithoutUserInput[] | OAuthAccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: OAuthAccountCreateOrConnectWithoutUserInput | OAuthAccountCreateOrConnectWithoutUserInput[]
@@ -4864,11 +5008,25 @@ export namespace Prisma {
     connect?: OAuthAccountWhereUniqueInput | OAuthAccountWhereUniqueInput[]
   }
 
+  export type ExpenseCreateNestedManyWithoutUserInput = {
+    create?: XOR<ExpenseCreateWithoutUserInput, ExpenseUncheckedCreateWithoutUserInput> | ExpenseCreateWithoutUserInput[] | ExpenseUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ExpenseCreateOrConnectWithoutUserInput | ExpenseCreateOrConnectWithoutUserInput[]
+    createMany?: ExpenseCreateManyUserInputEnvelope
+    connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+  }
+
   export type OAuthAccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<OAuthAccountCreateWithoutUserInput, OAuthAccountUncheckedCreateWithoutUserInput> | OAuthAccountCreateWithoutUserInput[] | OAuthAccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: OAuthAccountCreateOrConnectWithoutUserInput | OAuthAccountCreateOrConnectWithoutUserInput[]
     createMany?: OAuthAccountCreateManyUserInputEnvelope
     connect?: OAuthAccountWhereUniqueInput | OAuthAccountWhereUniqueInput[]
+  }
+
+  export type ExpenseUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ExpenseCreateWithoutUserInput, ExpenseUncheckedCreateWithoutUserInput> | ExpenseCreateWithoutUserInput[] | ExpenseUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ExpenseCreateOrConnectWithoutUserInput | ExpenseCreateOrConnectWithoutUserInput[]
+    createMany?: ExpenseCreateManyUserInputEnvelope
+    connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
   }
 
   export type OAuthAccountUpdateManyWithoutUserNestedInput = {
@@ -4885,6 +5043,20 @@ export namespace Prisma {
     deleteMany?: OAuthAccountScalarWhereInput | OAuthAccountScalarWhereInput[]
   }
 
+  export type ExpenseUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ExpenseCreateWithoutUserInput, ExpenseUncheckedCreateWithoutUserInput> | ExpenseCreateWithoutUserInput[] | ExpenseUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ExpenseCreateOrConnectWithoutUserInput | ExpenseCreateOrConnectWithoutUserInput[]
+    upsert?: ExpenseUpsertWithWhereUniqueWithoutUserInput | ExpenseUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ExpenseCreateManyUserInputEnvelope
+    set?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    disconnect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    delete?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    update?: ExpenseUpdateWithWhereUniqueWithoutUserInput | ExpenseUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ExpenseUpdateManyWithWhereWithoutUserInput | ExpenseUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ExpenseScalarWhereInput | ExpenseScalarWhereInput[]
+  }
+
   export type OAuthAccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<OAuthAccountCreateWithoutUserInput, OAuthAccountUncheckedCreateWithoutUserInput> | OAuthAccountCreateWithoutUserInput[] | OAuthAccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: OAuthAccountCreateOrConnectWithoutUserInput | OAuthAccountCreateOrConnectWithoutUserInput[]
@@ -4897,6 +5069,20 @@ export namespace Prisma {
     update?: OAuthAccountUpdateWithWhereUniqueWithoutUserInput | OAuthAccountUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: OAuthAccountUpdateManyWithWhereWithoutUserInput | OAuthAccountUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: OAuthAccountScalarWhereInput | OAuthAccountScalarWhereInput[]
+  }
+
+  export type ExpenseUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ExpenseCreateWithoutUserInput, ExpenseUncheckedCreateWithoutUserInput> | ExpenseCreateWithoutUserInput[] | ExpenseUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ExpenseCreateOrConnectWithoutUserInput | ExpenseCreateOrConnectWithoutUserInput[]
+    upsert?: ExpenseUpsertWithWhereUniqueWithoutUserInput | ExpenseUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ExpenseCreateManyUserInputEnvelope
+    set?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    disconnect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    delete?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    update?: ExpenseUpdateWithWhereUniqueWithoutUserInput | ExpenseUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ExpenseUpdateManyWithWhereWithoutUserInput | ExpenseUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ExpenseScalarWhereInput | ExpenseScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutOAuthAccountsInput = {
@@ -5073,6 +5259,64 @@ export namespace Prisma {
     _max?: NestedEnumOAuthProviderEnumFilter<$PrismaModel>
   }
 
+  export type UserCreateWithoutExpensesInput = {
+    id?: string
+    name: string
+    email: string
+    password?: string | null
+    salt?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    oAuthAccounts?: OAuthAccountCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutExpensesInput = {
+    id?: string
+    name: string
+    email: string
+    password?: string | null
+    salt?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    oAuthAccounts?: OAuthAccountUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutExpensesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutExpensesInput, UserUncheckedCreateWithoutExpensesInput>
+  }
+
+  export type UserUpsertWithoutExpensesInput = {
+    update: XOR<UserUpdateWithoutExpensesInput, UserUncheckedUpdateWithoutExpensesInput>
+    create: XOR<UserCreateWithoutExpensesInput, UserUncheckedCreateWithoutExpensesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutExpensesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutExpensesInput, UserUncheckedUpdateWithoutExpensesInput>
+  }
+
+  export type UserUpdateWithoutExpensesInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    oAuthAccounts?: OAuthAccountUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutExpensesInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    oAuthAccounts?: OAuthAccountUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type OAuthAccountCreateWithoutUserInput = {
     id?: string
     provider: $Enums.OAuthProviderEnum
@@ -5096,6 +5340,35 @@ export namespace Prisma {
 
   export type OAuthAccountCreateManyUserInputEnvelope = {
     data: OAuthAccountCreateManyUserInput | OAuthAccountCreateManyUserInput[]
+  }
+
+  export type ExpenseCreateWithoutUserInput = {
+    id?: string
+    amount: number
+    date: Date | string
+    category: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ExpenseUncheckedCreateWithoutUserInput = {
+    id?: string
+    amount: number
+    date: Date | string
+    category: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ExpenseCreateOrConnectWithoutUserInput = {
+    where: ExpenseWhereUniqueInput
+    create: XOR<ExpenseCreateWithoutUserInput, ExpenseUncheckedCreateWithoutUserInput>
+  }
+
+  export type ExpenseCreateManyUserInputEnvelope = {
+    data: ExpenseCreateManyUserInput | ExpenseCreateManyUserInput[]
   }
 
   export type OAuthAccountUpsertWithWhereUniqueWithoutUserInput = {
@@ -5126,6 +5399,36 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"OAuthAccount"> | Date | string
   }
 
+  export type ExpenseUpsertWithWhereUniqueWithoutUserInput = {
+    where: ExpenseWhereUniqueInput
+    update: XOR<ExpenseUpdateWithoutUserInput, ExpenseUncheckedUpdateWithoutUserInput>
+    create: XOR<ExpenseCreateWithoutUserInput, ExpenseUncheckedCreateWithoutUserInput>
+  }
+
+  export type ExpenseUpdateWithWhereUniqueWithoutUserInput = {
+    where: ExpenseWhereUniqueInput
+    data: XOR<ExpenseUpdateWithoutUserInput, ExpenseUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ExpenseUpdateManyWithWhereWithoutUserInput = {
+    where: ExpenseScalarWhereInput
+    data: XOR<ExpenseUpdateManyMutationInput, ExpenseUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ExpenseScalarWhereInput = {
+    AND?: ExpenseScalarWhereInput | ExpenseScalarWhereInput[]
+    OR?: ExpenseScalarWhereInput[]
+    NOT?: ExpenseScalarWhereInput | ExpenseScalarWhereInput[]
+    id?: StringFilter<"Expense"> | string
+    userId?: StringFilter<"Expense"> | string
+    amount?: FloatFilter<"Expense"> | number
+    date?: DateTimeFilter<"Expense"> | Date | string
+    category?: StringFilter<"Expense"> | string
+    description?: StringNullableFilter<"Expense"> | string | null
+    createdAt?: DateTimeFilter<"Expense"> | Date | string
+    updatedAt?: DateTimeFilter<"Expense"> | Date | string
+  }
+
   export type UserCreateWithoutOAuthAccountsInput = {
     id?: string
     name: string
@@ -5134,6 +5437,7 @@ export namespace Prisma {
     salt?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    expenses?: ExpenseCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOAuthAccountsInput = {
@@ -5144,6 +5448,7 @@ export namespace Prisma {
     salt?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    expenses?: ExpenseUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOAuthAccountsInput = {
@@ -5169,6 +5474,7 @@ export namespace Prisma {
     salt?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expenses?: ExpenseUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOAuthAccountsInput = {
@@ -5178,12 +5484,23 @@ export namespace Prisma {
     salt?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expenses?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type OAuthAccountCreateManyUserInput = {
     id?: string
     provider: $Enums.OAuthProviderEnum
     providerAccountId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ExpenseCreateManyUserInput = {
+    id?: string
+    amount: number
+    date: Date | string
+    category: string
+    description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -5205,6 +5522,33 @@ export namespace Prisma {
   export type OAuthAccountUncheckedUpdateManyWithoutUserInput = {
     provider?: EnumOAuthProviderEnumFieldUpdateOperationsInput | $Enums.OAuthProviderEnum
     providerAccountId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExpenseUpdateWithoutUserInput = {
+    amount?: FloatFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExpenseUncheckedUpdateWithoutUserInput = {
+    amount?: FloatFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExpenseUncheckedUpdateManyWithoutUserInput = {
+    amount?: FloatFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

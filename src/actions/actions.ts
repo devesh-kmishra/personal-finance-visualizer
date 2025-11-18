@@ -1,12 +1,18 @@
 "use server";
 
+import { getCurrentUser } from "@/lib/currentUser";
 import {
   generateSalt,
   hashPassword,
   verifyPassword,
 } from "@/lib/passwordHasher";
 import { prisma } from "@/lib/prisma";
-import { expenseSchema, signInSchema, signUpSchema } from "@/lib/schemas";
+import {
+  editingExpSchema,
+  newExpenseSchema,
+  signInSchema,
+  signUpSchema,
+} from "@/lib/schemas";
 import {
   createUserSession,
   removeUserFromSession,
@@ -20,7 +26,7 @@ import { z } from "zod";
 export async function signUp(formData: z.infer<typeof signUpSchema>) {
   const { success, data } = signUpSchema.safeParse(formData);
 
-  if (!success) return { error: "Sign up failed" };
+  if (!success) return { error: "Sign up failed!" };
 
   const existingUser = await prisma.user.findFirst({
     where: {
@@ -43,19 +49,19 @@ export async function signUp(formData: z.infer<typeof signUpSchema>) {
       },
     });
 
-    if (!user) return { error: "Sign up failed" };
+    if (!user) return { error: "Sign up failed!" };
 
     await createUserSession(user);
     return { success: true };
   } catch {
-    return { error: "Sign up failed" };
+    return { error: "Sign up failed!" };
   }
 }
 
 export async function signIn(formData: z.infer<typeof signInSchema>) {
   const { success, data } = signInSchema.safeParse(formData);
 
-  if (!success) return { error: "Sign in failed" };
+  if (!success) return { error: "Sign in failed!" };
 
   const user = await prisma.user.findFirst({
     where: {
@@ -64,7 +70,7 @@ export async function signIn(formData: z.infer<typeof signInSchema>) {
   });
 
   if (user == null || user.password == null || user.salt == null) {
-    return { error: "Sign in failed" };
+    return { error: "Sign in failed!" };
   }
 
   const isCorrectPassword = await verifyPassword({
@@ -73,12 +79,12 @@ export async function signIn(formData: z.infer<typeof signInSchema>) {
     salt: user.salt,
   });
 
-  if (!isCorrectPassword) return { error: "Sign in failed" };
+  if (!isCorrectPassword) return { error: "Sign in failed!" };
 
   await createUserSession(user);
   await updateUserSessionExpiration();
 
-  return { success: true };
+  return { success: true, userId: user.id };
 }
 
 export async function signOut() {
@@ -92,8 +98,35 @@ export async function oAuthSignIn(provider: OAuthProvider) {
   redirect(await oAuthClient.createAuthUrl());
 }
 
-export async function addExpense(data: z.infer<typeof expenseSchema>) {
-  await prisma.expense.create({
+export async function addExpense(formData: z.infer<typeof newExpenseSchema>) {
+  const { success, data } = newExpenseSchema.safeParse(formData);
+
+  if (!success) return { error: "Failed to add expense" };
+
+  const user = await getCurrentUser({ redirectIfNotFound: true });
+
+  const expense = await prisma.expense.create({
+    data: {
+      userId: user.id,
+      amount: data.amount,
+      date: data.date,
+      description: data.description ?? "",
+      category: data.category,
+    },
+  });
+
+  if (!expense) return { error: "Failed to add expense" };
+}
+
+export async function editExpense(formData: z.infer<typeof editingExpSchema>) {
+  const { success, data } = editingExpSchema.safeParse(formData);
+
+  if (!success) return { error: "Failed to edit expense" };
+
+  const expense = await prisma.expense.update({
+    where: {
+      id: data.id,
+    },
     data: {
       amount: data.amount,
       date: data.date,
@@ -101,4 +134,16 @@ export async function addExpense(data: z.infer<typeof expenseSchema>) {
       category: data.category,
     },
   });
+
+  if (!expense) return { error: "Failed to edit expense" };
+}
+
+export async function deleteExpense(expenseId: string) {
+  const deletedExpense = await prisma.expense.delete({
+    where: {
+      id: expenseId,
+    },
+  });
+
+  if (!deletedExpense) return { error: "Failed to delete expense" };
 }

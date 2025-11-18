@@ -130,6 +130,27 @@
   }
 }
 
+body {
+  font-family: var(--font-roboto), sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-roboto-slab), serif;
+}
+
 button {
   cursor: pointer;
+}
+
+.roboto {
+  font-family: var(--font-roboto), sans-serif;
+}
+
+.roboto-slab {
+  font-family: var(--font-roboto-slab), serif;
 }

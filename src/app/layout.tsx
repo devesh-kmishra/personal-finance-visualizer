@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Roboto, Roboto_Slab } from "next/font/google";
 import "./globals.css";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import AppSidebar from "@/components/Sidebar";
 import { Toaster } from "@/components/ui/sonner";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const roboto = Roboto({
   subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-roboto",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const robotoSlab = Roboto_Slab({
   subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-roboto-slab",
 });
 
 export const metadata: Metadata = {
@@ -27,17 +27,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
-      <body
-        className={`${geistSans.className} ${geistMono.className} antialiased`}
-      >
-        <SidebarProvider>
-          <AppSidebar />
-          <main>
-            <SidebarTrigger className='cursor-pointer' />
-            {children}
-          </main>
-        </SidebarProvider>
+    <html lang="en">
+      <body className={`${roboto.variable} ${robotoSlab.variable} antialiased`}>
+        {children}
         <Toaster />
       </body>
     </html>

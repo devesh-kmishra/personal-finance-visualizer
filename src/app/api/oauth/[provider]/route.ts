@@ -3,7 +3,6 @@ import { prisma } from "@/lib/prisma";
 import { createUserSession } from "@/lib/session";
 import { OAuthProvider, oAuthProviders } from "@/lib/utils";
 import { getOAuthClient } from "@/oauth/base";
-import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -46,8 +45,6 @@ export async function GET(
       )
     );
   }
-
-  redirect("/");
 }
 
 function connectUserToAccount(

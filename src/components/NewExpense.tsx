@@ -2,11 +2,8 @@
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-
+import { Controller, useForm } from "react-hook-form";
+import { ChevronDownIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
@@ -15,33 +12,56 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { toast } from "sonner";
 import { addExpense } from "@/actions/actions";
-import { expenseSchema } from "@/lib/schemas";
+import { newExpenseSchema } from "@/lib/schemas";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import {
+  Field,
+  FieldContent,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "./ui/field";
+import { useState } from "react";
+import { Textarea } from "./ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import { expenseCategories } from "@/lib/utils";
 
 export default function NewExpense() {
-  const form = useForm<z.infer<typeof expenseSchema>>({
-    resolver: zodResolver(expenseSchema),
+  const [open, setOpen] = useState(false);
+  const [date, setDate] = useState<Date | undefined>(new Date());
+  const form = useForm<z.infer<typeof newExpenseSchema>>({
+    resolver: zodResolver(newExpenseSchema),
     defaultValues: {
+      userId: "",
       amount: 0,
-      date: new Date(),
+      date: date,
       description: "",
-      category: "miscellaneous",
+      category: "",
     },
   });
 
-  async function onSubmit(values: z.infer<typeof expenseSchema>) {
+  async function onSubmit(values: z.infer<typeof newExpenseSchema>) {
     try {
-      addExpense(values);
-      toast(<p className='text-lg'>New expense added</p>);
+      await addExpense(values);
+      toast.success(
+        <p className="font-semibold text-lg text-shadow-green-600">
+          New expense added
+        </p>
+      );
       form.reset();
     } catch (err) {
       toast.error("Failed to add expense");
@@ -50,82 +70,144 @@ export default function NewExpense() {
   }
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className='w-2/3 space-y-6 border-1 rounded'
-      >
-        <FormField
-          control={form.control}
-          name='amount'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Amount</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='date'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Date</FormLabel>
-              <FormControl>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
+    <Card className="w-full lg:w-md mx-auto lg:mx-4">
+      <CardHeader>
+        <CardTitle className="roboto-slab">Add New Expense</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form
+          id="add-expense"
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-4 mx-auto"
+        >
+          <FieldGroup>
+            <Controller
+              name="category"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field
+                  orientation="responsive"
+                  data-invalid={fieldState.invalid}
+                >
+                  <FieldContent>
+                    <FieldLabel htmlFor="add-expense-category">
+                      Category
+                    </FieldLabel>
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </FieldContent>
+                  <Select
+                    name={field.name}
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  >
+                    <SelectTrigger
+                      id="add-expense-category"
+                      aria-invalid={fieldState.invalid}
+                      className="min-w-[120px]"
+                    >
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent position="item-aligned">
+                      {expenseCategories.map((category) => (
+                        <SelectItem key={category.value} value={category.value}>
+                          {category.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </Field>
+              )}
+            />
+            <Controller
+              name="amount"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="add-expense-amount">Amount</FieldLabel>
+                  <Input
+                    {...field}
+                    id="add-expense-amount"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="100.00"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+            <Controller
+              name="date"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="add-expense-date">Date</FieldLabel>
+                  <Popover open={open} onOpenChange={setOpen}>
+                    <PopoverTrigger asChild>
                       <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-[240px] pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground"
-                        )}
+                        variant="outline"
+                        id="add-expense-date"
+                        className="w-48 justify-between font-normal"
                       >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                        {date ? date.toLocaleDateString() : "Select date"}
+                        <ChevronDownIcon />
                       </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className='w-auto p-0' align='start'>
-                    <Calendar
-                      mode='single'
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1950-01-01")
-                      }
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='description'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type='submit'>Add Expense</Button>
-      </form>
-    </Form>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      className="w-auto overflow-hidden p-0"
+                      align="start"
+                    >
+                      <Calendar
+                        {...field}
+                        mode="single"
+                        selected={date}
+                        captionLayout="dropdown"
+                        onSelect={(date) => {
+                          setDate(date);
+                          setOpen(false);
+                        }}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+            <Controller
+              name="description"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="add-expense-description">
+                    Description
+                  </FieldLabel>
+                  <Textarea
+                    {...field}
+                    id="add-expense-description"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="Some description about the expense"
+                    className="min-h-[120px]"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </FieldGroup>
+        </form>
+      </CardContent>
+      <CardFooter>
+        <Field orientation="horizontal">
+          <Button type="submit" className="w-full" form="add-expense">
+            Add Expense
+          </Button>
+        </Field>
+      </CardFooter>
+    </Card>
   );
 }

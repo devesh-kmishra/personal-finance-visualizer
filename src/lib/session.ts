@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 const SESSION_EXPIRATION_SECONDS = 60 * 60 * 24 * 7;
 const COOKIE_SESSION_KEY = "session-id";
 
-const sessionSchema = z.object({
+export const sessionSchema = z.object({
   id: z.string(),
 });
 

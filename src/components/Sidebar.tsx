@@ -10,14 +10,17 @@ export default async function AppSidebar() {
     <Sidebar>
       <SidebarHeader />
       <SidebarContent>
-        <h3>Hello {currentUser?.name}</h3>
-        <Link href='/' className='px-4 py-2 hover:bg-gray-200'>
-          New Transaction
+        <h3>Hello {currentUser?.name.split(" ")[0]}</h3>
+        <Link href="/" className="px-4 py-2 hover:bg-gray-200">
+          New Expense
         </Link>
-        <Link href='/transactions' className='px-4 py-2 hover:bg-gray-200'>
-          My Transactions
+        <Link
+          href={`/${currentUser?.id}/expenses`}
+          className="px-4 py-2 hover:bg-gray-200"
+        >
+          My Expenses
         </Link>
-        <Link href='/' className='px-4 py-2 hover:bg-gray-200'>
+        <Link href="/" className="px-4 py-2 hover:bg-gray-200">
           Expense Charts
         </Link>
         <SignOutButton />

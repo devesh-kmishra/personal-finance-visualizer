@@ -13,7 +13,8 @@ export const signInSchema = z.object({
     .min(6, { message: "Password must be at least 6 characters" }),
 });
 
-export const expenseSchema = z.object({
+export const newExpenseSchema = z.object({
+  userId: z.string(),
   amount: z.coerce
     .number({
       message: "Amount must be a number.",
@@ -22,6 +23,14 @@ export const expenseSchema = z.object({
       message: "Amount must be greater than 0.",
     }),
   date: z.coerce.date(),
+  description: z.string().optional(),
+  category: z.string().min(1, "Please select a category"),
+});
+
+export const editingExpSchema = z.object({
+  id: z.string(),
+  amount: z.number(),
+  date: z.date(),
   description: z.string().optional(),
   category: z.string(),
 });
