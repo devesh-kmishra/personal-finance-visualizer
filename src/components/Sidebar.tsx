@@ -12,7 +12,7 @@ export default async function AppSidebar() {
       <SidebarContent>
         <h3>Hello {currentUser?.name.split(" ")[0]}</h3>
         <Link href="/" className="px-4 py-2 hover:bg-gray-200">
-          New Expense
+          Dashboard
         </Link>
         <Link
           href={`/${currentUser?.id}/expenses`}

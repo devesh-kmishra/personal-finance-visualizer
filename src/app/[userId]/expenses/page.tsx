@@ -16,8 +16,8 @@ export default async function ExpensesPage({
         <ExpenseList userId={userId} />
       </div>
       <div className="space-y-6">
-        <MonthlyBarChart />
-        <CategoryPieChart />
+        <MonthlyBarChart userId={userId} />
+        <CategoryPieChart userId={userId} />
       </div>
     </div>
   );

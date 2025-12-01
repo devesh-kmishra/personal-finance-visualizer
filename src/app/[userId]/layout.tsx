@@ -1,3 +1,4 @@
+import NewExpense from "@/components/NewExpense";
 import AppSidebar from "@/components/Sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
@@ -10,6 +11,7 @@ export default async function UserLayout({
     <SidebarProvider>
       <AppSidebar />
       {children}
+      <NewExpense />
     </SidebarProvider>
   );
 }
