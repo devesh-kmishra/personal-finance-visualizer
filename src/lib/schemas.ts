@@ -34,3 +34,11 @@ export const editingExpSchema = z.object({
   description: z.string().optional(),
   category: z.string(),
 });
+
+export const budgetSchema = z.object({
+  id: z.string().optional(),
+  userId: z.string().optional(),
+  category: z.string().min(1, "Category is required"),
+  amount: z.coerce.number().positive("Amount must be positive"),
+  month: z.string().min(1, "Month is required"),
+});

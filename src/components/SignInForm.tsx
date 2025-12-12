@@ -43,7 +43,7 @@ export function SignInForm() {
   }
 
   return (
-    <Card>
+    <Card className="w-full max-w-md">
       <CardHeader>
         <CardTitle>Sign In</CardTitle>
         <CardDescription>Sign in to your account</CardDescription>
@@ -54,12 +54,17 @@ export function SignInForm() {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <form id="sign-in" onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          id="sign-in"
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-4 mx-auto"
+        >
           {error && <p className="text-red-600">{error}</p>}
-          <Field orientation="horizontal">
+          <Field orientation="horizontal" className="flex justify-between">
             <Button
               type="button"
               variant="outline"
+              className="flex-1"
               onClick={async () => await oAuthSignIn(oAuthProviders[0])}
             >
               <FcGoogle />
@@ -67,6 +72,7 @@ export function SignInForm() {
             </Button>
             <Button
               type="button"
+              className="flex-1"
               onClick={async () => await oAuthSignIn(oAuthProviders[1])}
             >
               <FaGithub />

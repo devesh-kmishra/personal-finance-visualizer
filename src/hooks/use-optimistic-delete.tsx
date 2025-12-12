@@ -38,7 +38,7 @@ export function useOptimisticDelete(
         } catch (err) {
           console.error(err);
           setExpenses(oldExpenses);
-          toast.error("Failed to delete expense");
+          toast.error("Failed to delete expense!");
         }
       }
     }, 5000);

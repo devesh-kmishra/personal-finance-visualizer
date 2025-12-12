@@ -64,6 +64,7 @@ export function SignUpForm() {
             <Button
               type="button"
               variant="outline"
+              className="flex-1"
               onClick={async () => await oAuthSignIn(oAuthProviders[0])}
             >
               <FcGoogle />
@@ -71,6 +72,7 @@ export function SignUpForm() {
             </Button>
             <Button
               type="button"
+              className="flex-1"
               onClick={async () => await oAuthSignIn(oAuthProviders[1])}
             >
               <FaGithub />

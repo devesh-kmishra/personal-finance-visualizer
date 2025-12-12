@@ -124,6 +124,16 @@ exports.Prisma.ExpenseScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.BudgetScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  category: 'category',
+  amount: 'amount',
+  month: 'month',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -159,6 +169,7 @@ exports.OAuthProviderEnum = exports.$Enums.OAuthProviderEnum = {
 
 exports.Prisma.ModelName = {
   Expense: 'Expense',
+  Budget: 'Budget',
   User: 'User',
   OAuthAccount: 'OAuthAccount'
 };

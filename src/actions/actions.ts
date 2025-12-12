@@ -8,6 +8,7 @@ import {
 } from "@/lib/passwordHasher";
 import { prisma } from "@/lib/prisma";
 import {
+  budgetSchema,
   editingExpSchema,
   newExpenseSchema,
   signInSchema,
@@ -101,7 +102,7 @@ export async function oAuthSignIn(provider: OAuthProvider) {
 export async function addExpense(formData: z.infer<typeof newExpenseSchema>) {
   const { success, data } = newExpenseSchema.safeParse(formData);
 
-  if (!success) return { error: "Failed to add expense" };
+  if (!success) return { error: "Failed to add expense!" };
 
   const user = await getCurrentUser({ redirectIfNotFound: true });
 
@@ -115,13 +116,13 @@ export async function addExpense(formData: z.infer<typeof newExpenseSchema>) {
     },
   });
 
-  if (!expense) return { error: "Failed to add expense" };
+  if (!expense) return { error: "Failed to add expense!" };
 }
 
 export async function editExpense(formData: z.infer<typeof editingExpSchema>) {
   const { success, data } = editingExpSchema.safeParse(formData);
 
-  if (!success) return { error: "Failed to edit expense" };
+  if (!success) return { error: "Failed to edit expense!" };
 
   const expense = await prisma.expense.update({
     where: {
@@ -135,7 +136,7 @@ export async function editExpense(formData: z.infer<typeof editingExpSchema>) {
     },
   });
 
-  if (!expense) return { error: "Failed to edit expense" };
+  if (!expense) return { error: "Failed to edit expense!" };
 }
 
 export async function deleteExpense(expenseId: string) {
@@ -145,5 +146,60 @@ export async function deleteExpense(expenseId: string) {
     },
   });
 
-  if (!deletedExpense) return { error: "Failed to delete expense" };
+  if (!deletedExpense) return { error: "Failed to delete expense!" };
+}
+
+export async function addBudget(formData: z.infer<typeof budgetSchema>) {
+  const { success, data } = budgetSchema.safeParse(formData);
+
+  if (!success) return { error: "Failed to add budget!" };
+
+  const user = await getCurrentUser({ redirectIfNotFound: true });
+
+  const budget = await prisma.budget.create({
+    data: {
+      userId: user.id,
+      category: data.category,
+      amount: data.amount,
+      month: data.month,
+    },
+  });
+
+  if (!budget) return { error: "Failed to add budget!" };
+
+  return { budget };
+}
+
+export async function editBudget(formData: z.infer<typeof budgetSchema>) {
+  const { success, data } = budgetSchema.safeParse(formData);
+
+  if (!success) return { error: "Failed to edit budget!" };
+
+  const user = await getCurrentUser({ redirectIfNotFound: true });
+
+  const budget = await prisma.budget.update({
+    where: {
+      id: data.id,
+    },
+    data: {
+      userId: user.id,
+      category: data.category,
+      amount: data.amount,
+      month: data.month,
+    },
+  });
+
+  if (!budget) return { error: "Failed to edit budget!" };
+
+  return { budget };
+}
+
+export async function deleteBudget(budgetId: string) {
+  const deletedBudget = await prisma.budget.delete({
+    where: {
+      id: budgetId,
+    },
+  });
+
+  if (!deletedBudget) return { error: "Failed to delete budget!" };
 }

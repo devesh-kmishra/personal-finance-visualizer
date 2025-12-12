@@ -67,7 +67,7 @@ export default function NewExpense() {
       // Trigger a page refresh or refetch to update all components
       window.dispatchEvent(new Event("expenseAdded"));
     } catch (err) {
-      toast.error("Failed to add expense");
+      toast.error("Failed to add expense!");
       console.error(err);
     }
   }
@@ -131,7 +131,7 @@ export default function NewExpense() {
                             aria-invalid={fieldState.invalid}
                             className="min-w-[120px]"
                           >
-                            <SelectValue placeholder="Select" />
+                            <SelectValue placeholder="Select category" />
                           </SelectTrigger>
                           <SelectContent position="item-aligned">
                             {expenseCategories.map((category) => (
@@ -191,7 +191,6 @@ export default function NewExpense() {
                             align="start"
                           >
                             <Calendar
-                              {...field}
                               mode="single"
                               selected={field.value}
                               captionLayout="dropdown"

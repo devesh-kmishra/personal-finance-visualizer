@@ -20,8 +20,11 @@ export default async function AppSidebar() {
         >
           My Expenses
         </Link>
-        <Link href="/" className="px-4 py-2 hover:bg-gray-200">
-          Expense Charts
+        <Link
+          href={`/${currentUser?.id}/budgets`}
+          className="px-4 py-2 hover:bg-gray-200"
+        >
+          Budgets
         </Link>
         <SignOutButton />
       </SidebarContent>
