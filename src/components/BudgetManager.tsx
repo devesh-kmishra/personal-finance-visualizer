@@ -34,14 +34,17 @@ interface Budget {
   month: string; // Format: "2025-12"
 }
 
-export default function BudgetManager({ userId }: { userId: string }) {
+export default function BudgetManager({
+  userId,
+  selectedMonth,
+}: {
+  userId: string;
+  selectedMonth: string;
+}) {
   const [budgets, setBudgets] = useState<Budget[]>([]);
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editingBudget, setEditingBudget] = useState<Budget | null>(null);
-  const [selectedMonth, setSelectedMonth] = useState<string>(
-    new Date().toISOString().slice(0, 7) // Current month: "2025-12"
-  );
 
   const form = useForm<z.infer<typeof budgetSchema>>({
     resolver: zodResolver(budgetSchema),
@@ -180,21 +183,6 @@ export default function BudgetManager({ userId }: { userId: string }) {
           Add Budget
         </Button>
       </div>
-
-      {/* Month selector */}
-      <Card>
-        <CardContent className="pt-6">
-          <div className="flex items-center gap-4">
-            <label className="font-medium">Select Month:</label>
-            <Input
-              type="month"
-              value={selectedMonth}
-              onChange={(e) => setSelectedMonth(e.target.value)}
-              className="w-48"
-            />
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Budget list */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

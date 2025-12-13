@@ -1,4 +1,4 @@
-import BudgetManager from "@/components/BudgetManager";
+import BudgetPageContent from "@/components/BudgetPageContent";
 
 export default async function BudgetsPage({
   params,
@@ -7,9 +7,5 @@ export default async function BudgetsPage({
 }) {
   const { userId } = await params;
 
-  return (
-    <div>
-      <BudgetManager userId={userId} />
-    </div>
-  );
+  return <BudgetPageContent userId={userId} />;
 }
