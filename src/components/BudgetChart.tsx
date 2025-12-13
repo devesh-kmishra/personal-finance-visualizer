@@ -336,7 +336,8 @@ export default function BudgetComparisonChart({
                     Budget Alert
                   </p>
                   <p className="text-xs text-yellow-700 mt-1">
-                    You're over budget in {insights.overBudgetCount} categor
+                    You&apos;re over budget in {insights.overBudgetCount}{" "}
+                    categor
                     {insights.overBudgetCount > 1 ? "ies" : "y"}. Consider
                     reducing spending or adjusting your budget.
                   </p>
@@ -354,7 +355,7 @@ export default function BudgetComparisonChart({
                     Great Job!
                   </p>
                   <p className="text-xs text-green-700 mt-1">
-                    You're doing excellent with a{" "}
+                    You&apos;re doing excellent with a{" "}
                     {insights.savingsRate.toFixed(1)}% savings rate. Keep up the
                     good work!
                   </p>
